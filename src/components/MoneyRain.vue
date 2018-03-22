@@ -1,0 +1,76 @@
+<template>
+  <div class="moneyrain" :style="{ backgroundImage: image  }">
+    <OldRain />
+
+    <link rel="preload" :href="this.imageSrc" as="image">
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import OldRain from '@/components/OldRain.vue';
+
+export default {
+  name: 'MoneyRain',
+  components: {
+    OldRain,
+  },
+  data() {
+    return {
+      image: '',
+      imageSrc: ''
+    }
+  },
+  created() {
+    // on created get money rain images from giphy
+    axios.get('https://api.giphy.com/v1/gifs/search?api_key=3L2CLwQyQ99XlAv8pqwYTnaRgFJJFVdz&q=money+rain&limit=250&offset=0&rating=R&lang=en')
+      .then((response) => {
+        const imageData = response.data.data;
+
+        // change the money raining image every 4 sec
+        setInterval(() => {
+          this.doImageStuff(imageData);
+        }, 4000);
+
+        this.doImageStuff(imageData);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.image = ''; // reset on error
+      });
+  },
+  methods: {
+    doImageStuff(imageData) {
+      if (this.imageSrc) {
+        this.image = 'url(' + this.imageSrc + ')';
+      }
+
+      const randomNumber = Math.floor(Math.random() * imageData.length) + 1;
+
+      // check if chrome browser, chrome supports webp
+      // imageSrc will hold the url to the images which will be preloaded
+      const isChrome = /Google Inc/.test(navigator.vendor);
+      if (isChrome && imageData[randomNumber].images.original.webp) {
+        this.imageSrc = imageData[randomNumber].images.original.webp;
+      } else {
+        this.imageSrc = imageData[randomNumber].images.original.url;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped lang="scss">
+
+.moneyrain {
+  background: url('../assets/050gangster.gif') no-repeat center;
+  background-size: contain;
+  transition: background 0.2s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+</style>
