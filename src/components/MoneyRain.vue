@@ -1,6 +1,6 @@
 <template>
-  <div class="moneyrain" :style="{ backgroundImage: image  }">
-    <OldRain />
+  <div class="moneyrain" :style="{ backgroundImage: image }">
+    <CreditsRain />
 
     <link rel="preload" :href="this.imageSrc" as="image">
   </div>
@@ -8,12 +8,12 @@
 
 <script>
 import axios from 'axios';
-import OldRain from '@/components/OldRain.vue';
+import CreditsRain from '@/components/CreditsRain.vue';
 
 export default {
   name: 'MoneyRain',
   components: {
-    OldRain,
+    CreditsRain,
   },
   data() {
     return {
@@ -41,10 +41,12 @@ export default {
   },
   methods: {
     doImageStuff(imageData) {
+      // set the image
       if (this.imageSrc) {
         this.image = 'url(' + this.imageSrc + ')';
       }
 
+      // pick random number for random image
       const randomNumber = Math.floor(Math.random() * imageData.length) + 1;
 
       // check if chrome browser, chrome supports webp
