@@ -2,7 +2,8 @@
   <div class="credits">
     <a class="credits__oldrain" href="old_index.html">2.0 -> old rain</a>
     <a class="credits__giphy" href="https://giphy.com/search/money-rain" target="_blank">
-      <img src="../assets/Poweredby_100px_Badge.gif" class="credits__giphy-image" alt="powered by giphy" />
+      <img src="../assets/PoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif"
+           class="credits__giphy-image" alt="powered by giphy" />
     </a>
   </div>
 
@@ -12,12 +13,12 @@
 
 .credits {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-end;
 }
 
 .credits__oldrain {
@@ -25,8 +26,10 @@
   color: white;
   cursor: pointer;
   display: inline-block;
-  transition: all 3s linear;
+  transition: all 1s linear;
   font-weight: bold;
+  margin: 0 0 8px 8px;
+  display: block;
 
   &:hover {
     transform: rotate3d(1, 1, 1, 360deg);
@@ -42,7 +45,8 @@
 }
 
 .credits__giphy-image {
-  width: 40px;
+  width: 150px;
+  display: block;
 }
 
 </style>
