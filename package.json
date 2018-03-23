@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "url-search-params-polyfill": "^3.0.0",
     "vue": "^2.5.13"
   },
   "devDependencies": {

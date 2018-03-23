@@ -9,6 +9,7 @@
 <script>
 import axios from 'axios';
 import CreditsRain from '@/components/CreditsRain.vue';
+import 'url-search-params-polyfill'; // for IE...
 
 export default {
   name: 'MoneyRain',
@@ -22,8 +23,13 @@ export default {
     }
   },
   created() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let query = urlParams.get('q');
+    if (!query) {
+      query = 'money-rain';
+    }
     // on created get money rain images from giphy
-    axios.get('https://api.giphy.com/v1/gifs/search?api_key=3L2CLwQyQ99XlAv8pqwYTnaRgFJJFVdz&q=money+rain&limit=250&offset=0&rating=R&lang=en')
+    axios.get(`https://api.giphy.com/v1/gifs/search?api_key=3L2CLwQyQ99XlAv8pqwYTnaRgFJJFVdz&q=${query}&limit=500&offset=0&rating=R&lang=en`)
       .then((response) => {
         const imageData = response.data.data;
 
