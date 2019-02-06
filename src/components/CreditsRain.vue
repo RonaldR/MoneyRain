@@ -1,6 +1,6 @@
 <template>
   <div class="credits">
-    <a class="credits__oldrain" href="old_index.html">2.0 -> old rain</a>
+    <!-- <a class="credits__oldrain" href="old_index.html">2.0 -> old rain</a> -->
     <a class="credits__giphy" href="https://giphy.com/search/money-rain" target="_blank">
       <img src="../assets/PoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif"
            class="credits__giphy-image" alt="powered by giphy" />
