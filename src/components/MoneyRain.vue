@@ -1,5 +1,5 @@
 <template>
-  <div class="moneyrain" :style="{ backgroundImage: image }">
+  <div class="moneyrain" :style="{ backgroundImage: image }" @click="rainAndInterval()">
     <CreditsRain />
 
     <link rel="preload" :href="this.imageSrc" as="image">
@@ -19,7 +19,9 @@ export default {
   data() {
     return {
       image: '',
-      imageSrc: ''
+      imageSrc: '',
+      imageData: null,
+      interval: null
     }
   },
   created() {
@@ -31,14 +33,8 @@ export default {
     // on created get money rain images from giphy
     axios.get(`https://api.giphy.com/v1/gifs/search?api_key=3L2CLwQyQ99XlAv8pqwYTnaRgFJJFVdz&q=${query}&limit=500&offset=0&rating=R&lang=en`)
       .then((response) => {
-        const imageData = response.data.data;
-
-        // change the money raining image every 4 sec
-        setInterval(() => {
-          this.doImageStuff(imageData);
-        }, 4000);
-
-        this.doImageStuff(imageData);
+        this.imageData = response.data.data;
+        this.rainAndInterval();
       })
       .catch((error) => {
         console.log(error);
@@ -63,6 +59,17 @@ export default {
       } else {
         this.imageSrc = imageData[randomNumber].images.original.url;
       }
+    },
+    rainAndInterval() {
+        if (this.imageData) {
+            clearInterval(this.interval);
+            this.doImageStuff(this.imageData);
+
+            // change the money raining image every 4 sec
+            this.interval = setInterval(() => {
+            this.doImageStuff(this.imageData);
+            }, 4000);
+        }
     }
   }
 };
