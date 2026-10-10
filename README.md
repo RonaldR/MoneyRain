@@ -19,5 +19,4 @@ npm install
 npm run dev      # dev server
 npm run build    # production build in dist/
 npm run lint
-npm run deploy   # vercel --prod
 ```
