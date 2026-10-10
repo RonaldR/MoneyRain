@@ -1,52 +1,65 @@
+<script setup>
+import giphyBadge from '@/assets/PoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif';
+
+defineProps({
+  gif: { type: Object, default: null },
+});
+</script>
+
 <template>
-  <div class="credits">
-    <!-- <a class="credits__oldrain" href="old_index.html">2.0 -> old rain</a> -->
-    <a class="credits__giphy" href="https://giphy.com/search/money-rain" target="_blank">
-      <img src="../assets/PoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif"
-           class="credits__giphy-image" alt="powered by giphy" />
+  <div class="credits" data-ui>
+    <a v-if="gif" class="credits__title hud-fade" :href="gif.link" target="_blank" rel="noopener">
+      {{ gif.title }} ↗
+    </a>
+    <a class="credits__giphy" href="https://giphy.com/search/money-rain" target="_blank" rel="noopener">
+      <img :src="giphyBadge" class="credits__giphy-image" alt="Powered by GIPHY" width="150" height="20">
     </a>
   </div>
-
 </template>
 
-<style scoped lang="scss">
-
+<style scoped>
 .credits {
-  position: absolute;
-  bottom: 0;
+  position: fixed;
   left: 0;
-  right: 0;
+  bottom: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 0 0 env(safe-area-inset-bottom) env(safe-area-inset-left);
+  max-width: calc(100vw - 32px);
 }
 
-.credits__oldrain {
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
-  display: inline-block;
-  transition: all 1s linear;
-  font-weight: bold;
-  margin: 0 0 8px 8px;
-  display: block;
+.credits__title {
+  margin-left: 12px;
+  max-width: 40ch;
+  overflow: hidden;
+  font-size: 13px;
+  color: rgb(255 255 255 / 0.8);
+  text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 4px #000;
 
   &:hover {
-    transform: rotate3d(1, 1, 1, 360deg);
+    color: var(--gold);
   }
 }
 
 .credits__giphy {
-  font-size: 18px;
-  color: white;
-  cursor: pointer;
-  display: inline-block;
-  text-decoration: none;
-}
-
-.credits__giphy-image {
-  width: 150px;
   display: block;
 }
 
+/* the control bar sits right above the badge on small screens */
+@media (max-width: 560px) {
+  .credits__title {
+    display: none;
+  }
+}
+
+.credits__giphy-image {
+  display: block;
+  width: 150px;
+  height: auto;
+}
 </style>

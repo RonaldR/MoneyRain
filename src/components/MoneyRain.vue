@@ -1,91 +1,42 @@
-<template>
-  <div class="moneyrain" :style="{ backgroundImage: image }" @click="rainAndInterval()">
-    <CreditsRain />
+<script setup>
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { Rain } from '@/lib/rain';
 
-    <link rel="preload" :href="this.imageSrc" as="image">
-  </div>
-</template>
+const props = defineProps({
+  drizzle: { type: Number, default: 5 },
+});
 
-<script>
-import axios from 'axios';
-import CreditsRain from '@/components/CreditsRain.vue';
-import 'url-search-params-polyfill'; // for IE...
+const canvas = ref(null);
+let rain = null;
 
-export default {
-  name: 'MoneyRain',
-  components: {
-    CreditsRain,
-  },
-  data() {
-    return {
-      image: '',
-      imageSrc: '',
-      imageData: null,
-      interval: null
-    }
-  },
-  created() {
-    const urlParams = new URLSearchParams(window.location.search);
-    let query = urlParams.get('q');
-    if (!query) {
-      query = 'money-rain';
-    }
-    // on created get money rain images from giphy
-    axios.get(`https://api.giphy.com/v1/gifs/search?api_key=3L2CLwQyQ99XlAv8pqwYTnaRgFJJFVdz&q=${query}&limit=500&offset=0&rating=R&lang=en`)
-      .then((response) => {
-        this.imageData = response.data.data;
-        this.rainAndInterval();
-      })
-      .catch((error) => {
-        console.log(error);
-        this.image = ''; // reset on error
-      });
-  },
-  methods: {
-    doImageStuff(imageData) {
-      // set the image
-      if (this.imageSrc) {
-        this.image = 'url(' + this.imageSrc + ')';
-      }
+onMounted(() => {
+  rain = new Rain(canvas.value);
+  rain.drizzle = props.drizzle;
+});
+onBeforeUnmount(() => rain?.destroy());
+watch(() => props.drizzle, (value) => {
+  if (rain) rain.drizzle = value;
+});
 
-      // pick random number for random image
-      const randomNumber = Math.floor(Math.random() * imageData.length) + 1;
-
-      // check if chrome browser, chrome supports webp
-      // imageSrc will hold the url to the images which will be preloaded
-      const isChrome = /Google Inc/.test(navigator.vendor);
-      if (isChrome && imageData[randomNumber].images.original.webp) {
-        this.imageSrc = imageData[randomNumber].images.original.webp;
-      } else {
-        this.imageSrc = imageData[randomNumber].images.original.url;
-      }
-    },
-    rainAndInterval() {
-        if (this.imageData) {
-            clearInterval(this.interval);
-            this.doImageStuff(this.imageData);
-
-            // change the money raining image every 4 sec
-            this.interval = setInterval(() => {
-            this.doImageStuff(this.imageData);
-            }, 4000);
-        }
-    }
-  }
-};
+defineExpose({
+  burst: (...args) => rain?.burst(...args),
+  startThrow: (...args) => rain?.startThrow(...args),
+  moveThrow: (...args) => rain?.moveThrow(...args),
+  stopThrow: () => rain?.stopThrow(),
+  jackpot: (duration) => rain?.jackpot(duration),
+});
 </script>
 
-<style scoped lang="scss">
+<template>
+  <canvas ref="canvas" class="money-rain" aria-hidden="true" />
+</template>
 
-.moneyrain {
-  background: url('../assets/050gangster.gif') no-repeat center;
-  background-size: contain;
-  transition: background 0.2s ease-in-out;
+<style scoped>
+.money-rain {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
-
 </style>

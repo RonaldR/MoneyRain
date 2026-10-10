@@ -1,0 +1,35 @@
+:root {
+  --gold: #ffd700;
+  --gold-gradient: linear-gradient(180deg, #fff6b0 0%, #ffd700 40%, #e0a100 60%, #fff3a0 100%);
+  --font-loud: Impact, Haettenschweiler, 'Arial Narrow Bold', 'Arial Black', sans-serif;
+  --cursor-bag: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext x='2' y='26' font-size='26'%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E") 16 16;
+  --cursor-throw: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext x='2' y='26' font-size='26'%3E%F0%9F%92%B8%3C/text%3E%3C/svg%3E") 16 16, pointer;
+
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  cursor: var(--cursor-bag), pointer;
+}
+
+a,
+button {
+  cursor: var(--cursor-bag), pointer;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
